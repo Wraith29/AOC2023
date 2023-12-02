@@ -1,10 +1,9 @@
 import sequtils
-import strformat
 import strutils
 import sugar
 
 proc loadData: string =
-  const fileName = "sample.txt"
+  const fileName = "input.txt"
 
   readFile(fileName)
 
@@ -31,7 +30,6 @@ proc toLineOfInts(line: string): string =
   var idx = 0
   while idx < line.len:
     let slice = substr(line, idx)
-    echo slice
 
     if isDigit slice[0]:
       result &= $slice[0]
@@ -42,8 +40,7 @@ proc toLineOfInts(line: string): string =
       for _, (t, v) in charMap:
         if slice.startsWith(t):
           result &= $v
-          idx += t.len - 1
-        break a
+          break a
 
     idx += 1
 
