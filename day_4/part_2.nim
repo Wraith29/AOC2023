@@ -1,7 +1,3 @@
-## Wrong Answers
-## 
-## 5756587
-
 import tables
 import regex
 import sequtils
@@ -10,7 +6,7 @@ import strutils
 import sugar
 
 const
-  input = staticRead("./sample.txt")
+  input = staticRead("./input.txt")
 
 type Card = ref object
   id: int
@@ -63,14 +59,9 @@ proc solve(data: string): int =
   for i in 1 .. cards.len():
     cardTable[i] = 1
 
-  ## The result needs to be the total number of cards played
-  ## For each card, set the next `n` cards to be +1
-  ## Each subsequent card needs to be increased by that amount
-
   for card in cards:
-    echo cardTable
-    for i in card.id+1 ..< card.id+1+card.winCount():
-      cardTable[i] += (i * cardTable[card.id])
+    for i in card.id + 1 ..< card.id + 1 + card.winCount():
+      cardTable[i] += cardTable[card.id]
 
   for v in cardTable.values():
     result += v
