@@ -1,6 +1,7 @@
+import regex
+import strformat
 import strutils
 import tables
-import strformat
 
 const
   redCount = 12
@@ -14,12 +15,23 @@ proc `$`*(game: Game): string =
   fmt"Game(id: {game.id}, blue: {game.blue}, red: {game.red}, green: {game.green})"
 
 proc newGame(line: string): Game =
+  const
+    gameIdPattern = re2 "Game\\s(?P<gameId>[0-9]+):"
+    roundPattern = re2 ""
+  
+  var
+    gameIdMatch: RegexMatch2
+
+  discard find(line, gameIdPattern, gameIdMatch)
+  let
+    gameId = parseInt line[gameIdMatch.group("gameId")]
+
   let splitLine = line.split(':', 2)
-  let (gameId, data) = (splitLine[0], splitLine[1])
+  let (_, data) = (splitLine[0], splitLine[1])
 
   result = new Game
 
-  result.id = gameId.split(' ')[1].parseInt()
+  result.id = gameId
   for roll in data.split(";"):
     var cubes = newTable[string, int]()
     for cube in roll.split(","):
