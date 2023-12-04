@@ -11,4 +11,4 @@ A repository containing all of my solutions for the Advent of Code 2023
 | 3.1 | 543867 |
 | 3.2 | 79613331 |
 | 4.1 | 21088 |
-| 4.2 | ????? |
+| 4.2 | 6874754 |
