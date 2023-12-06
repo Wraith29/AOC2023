@@ -21,23 +21,20 @@ const
 
 type Range = tuple[bottom, top: int]
 
-proc `$`*(r: Range): string =
-  fmt"Range({r.bottom} .. {r.top})"
-
-proc `in`*(n: int, r: Range): bool {.inline.} =
+proc `in`(n: int, r: Range): bool {.inline.} =
   n >= r.bottom and n <= r.top
 
-proc find*(t: TableRef[Range, Range], n: int): Option[tuple[k, v: Range]] =
+proc find(t: TableRef[Range, Range], n: int): Option[tuple[k, v: Range]] =
   for k, v in t:
     if n in k:
       return some((k: k, v: v))
   none(tuple[k, v: Range])
 
-proc value*(r: tuple[k, v: Range]; n: int): int =
+proc value(r: tuple[k, v: Range]; n: int): int =
   let offset = n - r.k.bottom
   r.v.bottom + offset
 
-proc `in`*(n: int, t: TableRef[Range, Range]): bool {.inline.} =
+proc `in`(n: int, t: TableRef[Range, Range]): bool {.inline.} =
   for key, _ in t:
     if n in key:
       return true
