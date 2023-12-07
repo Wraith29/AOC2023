@@ -1,10 +1,10 @@
+import ../timing
 import regex
 import options
 import strformat
 import sequtils
 import strutils
 import tables
-import times
 import weave
 
 const
@@ -60,9 +60,9 @@ proc getSeeds(line: string): seq[Range] =
 
     i += 2
 
-proc solve(inp: string): ref int =
+proc solve(inp: string): int =
+  result = 1_000_000
   init(Weave)
-  result = cast[ref int](100)
   let
     data = inp.splitLines().filterIt(not it.isEmptyOrWhitespace)
   
@@ -117,30 +117,9 @@ proc solve(inp: string): ref int =
           location = valueOrDefault(mapping, hl, humidity)
         locations.add(location)
 
-      # parallelForStaged seed in seedRange.bottom ..< seedRange.top:
-      #   captures: {mapping, outerLocations}
-      #   prologue:
-      #     var locations = newSeq[int]()
-      #   loop:
-      #     var
-      #       soil = valueOrDefault(mapping, ss, seed)
-      #       fertilizer = valueOrDefault(mapping, sf, soil)
-      #       water = valueOrDefault(mapping, fw, fertilizer)
-      #       light = valueOrDefault(mapping, wl, water)
-      #       temperature = valueOrDefault(mapping, lt, light)
-      #       humidity = valueOrDefault(mapping, th, temperature)
-      #       location = valueOrDefault(mapping, hl, humidity)
-      #     locations.add(location)
-      #   epilogue:
-      #     echo min(locations)
     epilogue:
       echo fmt"{index}/{seeds.len()} - {min(locations)}"
 
   exit(Weave)
 
-let
-  start = cpuTime()
-  res = solve(input)
-  fin = cpuTime()
-
-echo fmt"Day 5 - Part 2: {res[]} {fin - start}ms"
+timeit(5, 2, input, solve)

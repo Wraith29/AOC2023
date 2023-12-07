@@ -1,3 +1,4 @@
+import ../timing
 import sequtils
 import std/enumerate
 import strutils
@@ -34,4 +35,4 @@ proc solve(data: string): int =
 
     result += parseInt($chars[0] & $chars[^1])
 
-echo "Day 1 - Part 2: ", solve(input)
+timeit(1, 2, input, solve)

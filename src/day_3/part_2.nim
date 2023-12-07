@@ -1,10 +1,10 @@
+import ../timing
 import math
 import strformat
 import regex
 import strutils
 
-const
-  input = staticRead("./input.txt")
+const input = staticRead("./input.txt")
 
 type PartNumber = ref object
   length, row, col, value: int
@@ -71,4 +71,4 @@ proc solve(input: string): int =
 
     result += (adjacentPartNumbers[0].value * adjacentPartNumbers[1].value)
 
-echo "Day 3 - Part 2: ", solve(input)
+timeit(3, 2, input, solve)

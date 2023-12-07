@@ -1,19 +1,12 @@
+import ../timing
 import regex
-import strformat
 import math
 import strutils
 
-const
-  input = staticRead("./input.txt")
+const input = staticRead("./input.txt")
 
 type Symbol = ref object
   width, row, col: int
-
-proc `$`*(s: Symbol): string =
-  fmt"Symbol(row: {s.row}, col: {s.col})"
-
-func gridPos*(symbol: Symbol): int =
-  (symbol.row * symbol.width) + symbol.col
 
 proc findSymbols(data: string, rowWidth: int): seq[Symbol] =
   const pattern = re2 "[^.0-9]"
@@ -65,4 +58,4 @@ proc solve(input: string): int =
 
     lastMatchPos = match.boundaries.b+1
 
-echo "Day 3 - Part 1: ", solve(input)
+timeit(3, 1, input, solve)

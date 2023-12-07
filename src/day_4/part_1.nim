@@ -1,12 +1,11 @@
+import ../timing
 import math
 import regex
 import sequtils
-import strformat
 import strutils
 import sugar
 
-const
-  input = staticRead("./input.txt")
+const input = staticRead("./input.txt")
 
 type Card = ref object
   id: int
@@ -14,9 +13,6 @@ type Card = ref object
 
 proc newCard(id: int; winningNumbers, inputNumbers: seq[int]): Card =
   Card(id: id, inputNumbers: inputNumbers, winningNumbers: winningNumbers)
-
-proc `$`*(c: Card): string =
-  fmt"Card(cardId: {c.id}, winningNumbers: {c.winningNumbers}, inputNumbers: {c.inputNumbers})"
 
 proc value(c: Card): int =
   for num in c.inputNumbers:
@@ -59,5 +55,4 @@ proc solve(data: string): int =
   
   cards.map((c: Card) => c.value()).sum()
 
-echo "Day 4 - Part 1: ", solve(input)
-
+timeit(4, 1, input, solve)

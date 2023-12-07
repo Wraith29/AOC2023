@@ -1,3 +1,4 @@
+import ../timing
 import sequtils
 import strutils
 import sugar
@@ -13,4 +14,4 @@ proc solve(data: string): int =
 
     result += parseInt(chars[0] & chars[^1])
 
-echo "Day 1 - Part 1: ", solve(input)
+timeit(1, 1, input, solve)

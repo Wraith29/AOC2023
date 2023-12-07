@@ -1,9 +1,10 @@
+import ../timing
 import regex
-import strformat
 import strutils
 import tables
 
 const
+  input = staticRead("./input.txt")
   redCount = 12
   greenCount = 13
   blueCount = 14
@@ -11,20 +12,13 @@ const
 type Game = ref object
   id, blue, red, green: int
 
-proc `$`*(game: Game): string =
-  fmt"Game(id: {game.id}, blue: {game.blue}, red: {game.red}, green: {game.green})"
-
 proc newGame(line: string): Game =
-  const
-    gameIdPattern = re2 "Game\\s(?P<gameId>[0-9]+):"
-    roundPattern = re2 ""
+  const gameIdPattern = re2 "Game\\s(?P<gameId>[0-9]+):"
   
-  var
-    gameIdMatch: RegexMatch2
+  var gameIdMatch: RegexMatch2
 
   discard find(line, gameIdPattern, gameIdMatch)
-  let
-    gameId = parseInt line[gameIdMatch.group("gameId")]
+  let gameId = parseInt line[gameIdMatch.group("gameId")]
 
   let splitLine = line.split(':', 2)
   let (_, data) = (splitLine[0], splitLine[1])
@@ -48,16 +42,10 @@ proc newGame(line: string): Game =
 proc isPossible(game: Game): bool =
   game.blue <= blueCount and game.red <= redCount and game.green <= greenCount
 
-const data = staticRead("./input.txt")
-
 proc solve(data: string): int =
   for line in data.strip(true, true).splitLines:
     let game = newGame(line)
     if game.isPossible():
       result += game.id
 
-proc main =
-  echo "Part 1: ", solve(data)
-
-when isMainModule:
-  main()
+timeit(2, 1, input, solve)

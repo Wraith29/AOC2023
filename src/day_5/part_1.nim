@@ -1,10 +1,9 @@
+import ../timing
 import regex
 import options
-import strformat
 import sequtils
 import strutils
 import tables
-import times
 
 const
   input = staticRead "./input.txt"
@@ -107,9 +106,4 @@ proc solve(inp: string): int =
 
   min(locations)
 
-let
-  start = cpuTime()
-  res = solve(input)
-  fin = cpuTime()
-
-echo fmt"Day 5 - Part 1: {res} {fin - start}ms"
+timeit(5, 1, input, solve)
