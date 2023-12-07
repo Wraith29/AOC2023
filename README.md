@@ -1,5 +1,18 @@
 # Advent of Code 2023
 
+## Requirements
+
+### Languages / Frameworks
+
+Nim
+
+### Nimble Packages
+
+regex
+weave
+
+## Answers
+
 A repository containing all of my solutions for the Advent of Code 2023
 
 | Day | Answer |
@@ -13,3 +26,4 @@ A repository containing all of my solutions for the Advent of Code 2023
 | 4.1 | 21088 |
 | 4.2 | 6874754 |
 | 5.1 | 3374647 |
+| 5.2 | 6082852 |
