@@ -15,7 +15,7 @@ namedBin = {
     "src/day_4/part_1": "d4p1",
     "src/day_4/part_2": "d4p2",
     "src/day_5/part_1": "d5p1", 
-    }
+}.toTable()
     # "src/day_5/part_2", ## Day 5 part 2 is disabled currently
     # "src/day_6/part_1", "src/day_6/part_2",
 
@@ -24,3 +24,9 @@ namedBin = {
 requires "nim"
 requires "regex"
 requires "weave"
+
+import os
+task runAll, "Run all executables":
+
+    for path in os.walkDir("./bin"):
+        exec path&path

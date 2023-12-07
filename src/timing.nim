@@ -7,4 +7,4 @@ proc timeit*(day, part: int; data: string; fn: (string) -> int): void =
   let res = fn(data)
   let endTime = cpuTime()
 
-  echo fmt"Day {day} - Part {part}: {res} - {startTime - endTime} ms"
+  echo fmt"Day {day} - Part {part}: {res} - {endTime - startTime} ms"
