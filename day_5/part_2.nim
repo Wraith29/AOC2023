@@ -5,6 +5,7 @@ import sequtils
 import strutils
 import tables
 import times
+import weave
 
 const
   input = staticRead "./input.txt"
@@ -22,7 +23,7 @@ const
 type
   Range = tuple[bottom, top: int]
 
-proc `in`(n: int, r: Range): bool {.inline.} =
+proc `in`(n: int, r: Range): bool =
   n >= r.bottom and n <= r.top
 
 proc find(t: TableRef[Range, Range], n: int): Option[tuple[k, v: Range]] =
@@ -35,7 +36,7 @@ proc value(r: tuple[k, v: Range]; n: int): int =
   let offset = n - r.k.bottom
   r.v.bottom + offset
 
-proc `in`(n: int, t: TableRef[Range, Range]): bool {.inline.} =
+proc `in`(n: int, t: TableRef[Range, Range]): bool =
   for key, _ in t:
     if n in key:
       return true
@@ -59,7 +60,9 @@ proc getSeeds(line: string): seq[Range] =
 
     i += 2
 
-proc solve(inp: string): int =
+proc solve(inp: string): ref int =
+  init(Weave)
+  result = cast[ref int](100)
   let
     data = inp.splitLines().filterIt(not it.isEmptyOrWhitespace)
   
@@ -91,33 +94,53 @@ proc solve(inp: string): int =
       rangeLength = parseInt line[rangeMatch.group "len"]
 
     mapping[mapStr][(bottom: srcRangeStart, top: srcRangeStart+rangeLength-1)] = (bottom: dstRangeStart, top: dstRangeStart+rangeLength-1)
-  
-  var
-    soil = 0
-    fertilizer = 0
-    water = 0
-    light = 0
-    temperature = 0
-    humidity = 0
-    location = 0
-    locations = newSeq[int]()
 
-  for seedRange in seeds:
-    for seed in seedRange.bottom ..< seedRange.top:
-      soil = valueOrDefault(mapping, ss, seed)
-      fertilizer = valueOrDefault(mapping, sf, soil)
-      water = valueOrDefault(mapping, fw, fertilizer)
-      light = valueOrDefault(mapping, wl, water)
-      temperature = valueOrDefault(mapping, lt, light)
-      humidity = valueOrDefault(mapping, th, temperature)
-      location = valueOrDefault(mapping, hl, humidity)
-      locations.add location
+  echo "Finished Processing Mappings"
 
-  min(locations)
+  parallelForStaged i in 0 ..< seeds.len():
+    captures: {mapping, seeds}
+    prologue:
+      var index: int
+      var locations = newSeq[int]()
+    loop:
+      echo fmt"Processing {i}/{seeds.len()}"
+      index = i
+      let seedRange = seeds[i]
+      for seed in seedRange.bottom ..< seedRange.top:
+        let
+          soil = valueOrDefault(mapping, ss, seed)
+          fertilizer = valueOrDefault(mapping, sf, soil)
+          water = valueOrDefault(mapping, fw, fertilizer)
+          light = valueOrDefault(mapping, wl, water)
+          temperature = valueOrDefault(mapping, lt, light)
+          humidity = valueOrDefault(mapping, th, temperature)
+          location = valueOrDefault(mapping, hl, humidity)
+        locations.add(location)
+
+      # parallelForStaged seed in seedRange.bottom ..< seedRange.top:
+      #   captures: {mapping, outerLocations}
+      #   prologue:
+      #     var locations = newSeq[int]()
+      #   loop:
+      #     var
+      #       soil = valueOrDefault(mapping, ss, seed)
+      #       fertilizer = valueOrDefault(mapping, sf, soil)
+      #       water = valueOrDefault(mapping, fw, fertilizer)
+      #       light = valueOrDefault(mapping, wl, water)
+      #       temperature = valueOrDefault(mapping, lt, light)
+      #       humidity = valueOrDefault(mapping, th, temperature)
+      #       location = valueOrDefault(mapping, hl, humidity)
+      #     locations.add(location)
+      #   epilogue:
+      #     echo min(locations)
+    epilogue:
+      echo fmt"{index}/{seeds.len()} - {min(locations)}"
+
+  exit(Weave)
 
 let
   start = cpuTime()
   res = solve(input)
   fin = cpuTime()
 
-echo fmt"Day 5 - Part 2: {res} {fin - start}ms"
+echo fmt"Day 5 - Part 2: {res[]} {fin - start}ms"
