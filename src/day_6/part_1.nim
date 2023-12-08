@@ -9,6 +9,8 @@ type
   Race = object
     time, distance: int
 
+
+
 proc solve(data: string): int =
 
   let
