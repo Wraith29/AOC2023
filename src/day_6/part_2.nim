@@ -27,4 +27,4 @@ proc solve(data: string): int =
   return race.numWaysToWin
 
 
-timeit(6, 1, input, solve)
+timeit(6, 2, input, solve)

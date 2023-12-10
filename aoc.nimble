@@ -17,6 +17,10 @@ namedBin = {
     "src/day_5/part_1": "day_5/part_1", 
     "src/day_6/part_1": "day_6/part_1",
     "src/day_6/part_2": "day_6/part_2",
+    "src/day_7/part_1": "day_7/part_1",
+    "src/day_7/part_2": "day_7/part_2",
+    "src/day_8/part_1": "day_8/part_1",
+    "src/day_8/part_2": "day_8/part_2",
 }.toTable()
     # "src/day_5/part_2", ## Day 5 part 2 is disabled currently
 
