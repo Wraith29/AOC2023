@@ -33,3 +33,5 @@ A repository containing all of my solutions for the Advent of Code 2023
 | 7.2 | 250382098      | 0.054s   |
 | 8.1 | 14893          | 0.008s   |
 | 8.2 | 10241191004509 | 0.019s   |
+| 9.1 | 1834108701     | 0.007s   |
+| 9.2 | 993            | 0.008s   |
